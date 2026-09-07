@@ -1,0 +1,25 @@
+BORROWER COPILOT — PROJECT MAP
+
+index.html
+  Intro screen, adaptive-question screen, results screen, sample chooser modal.
+
+style.css
+  Responsive UI, states, modal, result cards, print layout, mobile layout.
+
+app.js
+  State, sample personas, adaptive question rendering, validation, navigation,
+  sample chooser, result rendering, Negotiation Card, print action.
+
+rules.js
+  Deterministic calculations: conservative income, safe EMI, safe amount,
+  modeled lender amount, rate band, illustrative APR, stress test, decision,
+  confidence. No DOM dependencies.
+
+RULES.md
+  Audit trail for assumptions, formulas, thresholds, limitations and adaptive paths.
+
+RUN_THROUGHS.md
+  Priya, Ravi and Anita challenge-persona run-throughs and expected outputs.
+
+tests/rules.test.js
+  Node-based regression tests for the deterministic rules engine.

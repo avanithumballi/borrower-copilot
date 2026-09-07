@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Borrower Copilot — a transparent self-assessment tool for Indian borrowers." />
+  <title>Borrower Copilot | Lokta Build Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">BC</span>
+      <span>Borrower Copilot</span>
+    </div>
+    <button id="resetBtn" class="text-btn" type="button">Start over</button>
+  </header>
+
+  <main>
+    <section id="introScreen" class="screen active">
+      <div class="hero">
+        <p class="eyebrow">Borrower self-assessment</p>
+        <h1>Know your number<br><em>before</em> the lender does.</h1>
+        <p class="hero-copy">
+          A transparent estimate of whether to borrow, how much you can safely carry,
+          what rate range to negotiate, and the EMI you should not cross.
+        </p>
+        <div class="hero-actions">
+          <button id="startBtn" class="primary-btn" type="button">Start assessment</button>
+          <button id="demoBtn" class="secondary-btn" type="button">Try a sample borrower</button>
+        </div>
+        <div class="trust-row">
+          <span>✓ No login</span>
+          <span>✓ No bureau pull</span>
+          <span>✓ Nothing stored</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="questionScreen" class="screen">
+      <div class="assessment-shell">
+        <div class="progress-wrap">
+          <div class="progress-meta">
+            <span id="progressLabel">Question 1</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+        </div>
+
+        <div class="sample-banner" id="sampleBanner" hidden><strong>Sample borrower:</strong> <span id="sampleBannerName"></span><span> — answers are pre-filled for demo testing.</span></div>
+        <div class="question-card">
+          <p id="questionEyebrow" class="eyebrow">Must-have question</p>
+          <h2 id="questionTitle"></h2>
+          <p id="questionHelp" class="question-help"></p>
+          <div id="questionBody"></div>
+          <p id="questionWhy" class="why-note"></p>
+          <p id="validationMessage" class="validation-message" hidden></p>
+        </div>
+
+        <div class="nav-row">
+          <button id="backBtn" class="secondary-btn" type="button">Back</button>
+          <button id="nextBtn" class="primary-btn" type="button">Continue</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="resultsScreen" class="screen">
+      <div class="results-shell">
+        <div class="result-header">
+          <div id="decisionPill" class="decision-pill" aria-label="Borrowing decision"></div>
+          <p class="eyebrow">Your borrower assessment</p>
+          <h1 id="resultDecision"></h1>
+          <p id="resultSummary" class="result-summary"></p>
+          <div id="confidenceBadge" class="confidence-badge"></div>
+        </div>
+
+        <div class="result-grid">
+          <article class="metric-card decision-card">
+            <div class="card-label">Borrowing decision</div>
+            <div id="decisionValue" class="big-value"></div>
+            <p id="decisionReason"></p>
+          </article>
+
+          <article class="metric-card">
+            <div class="card-label">Maximum amount</div>
+            <div class="split-values">
+              <div>
+                <span>Likely lender sanction (modeled)</span>
+                <strong id="lenderAmount"></strong>
+              </div>
+              <div>
+                <span>Safe borrower amount</span>
+                <strong id="safeAmount"></strong>
+              </div>
+            </div>
+            <p class="recommended-note">Treat the safe amount as a ceiling, not an approval. The lender amount is a separate modeled estimate.</p>
+          </article>
+
+          <article class="metric-card">
+            <div class="card-label">Fair cost of borrowing</div>
+            <div class="split-values">
+              <div>
+                <span>Fair interest-rate band</span>
+                <strong id="rateBand"></strong>
+              </div>
+              <div>
+                <span>Estimated all-in APR</span>
+                <strong id="aprBand"></strong>
+              </div>
+            </div>
+            <p id="rateReason"></p>
+          </article>
+
+          <article class="metric-card">
+            <div class="card-label">EMI ceiling</div>
+            <div class="big-value" id="safeEmi"></div>
+            <p id="emiReason"></p>
+            <div class="tenure-table">
+              <div><span>3 years</span><strong id="emi3"></strong></div>
+              <div><span>5 years</span><strong id="emi5"></strong></div>
+              <div><span>7 years</span><strong id="emi7"></strong></div>
+            </div>
+          </article>
+        </div>
+
+        <article class="stress-card">
+          <div>
+            <p class="eyebrow">Stress test</p>
+            <h2 id="stressTitle"></h2>
+            <p id="stressText"></p>
+          </div>
+          <div class="stress-number" id="stressRatio"></div>
+        </article>
+
+        <article class="reason-card">
+          <div>
+            <p class="eyebrow">Why these numbers?</p>
+            <h2>Every important output has a reason.</h2>
+          </div>
+          <ul id="reasonList"></ul>
+        </article>
+
+        <article class="card negotiation-card">
+          <div class="card-topline">
+            <div>
+              <p class="eyebrow">Negotiation Card</p>
+              <h2>Take this to the lender.</h2>
+            </div>
+            <button id="printBtn" class="secondary-btn small-btn" type="button">Print card</button>
+          </div>
+          <div id="negotiationCardContent" class="negotiation-inner"></div>
+        </article>
+
+        <article class="assumption-card" id="assumptionCard" hidden>
+          <div class="card-label">Assumptions & limits</div>
+          <p id="assumptionText"></p>
+        </article>
+
+        <div class="disclaimer">
+          <strong>Important:</strong> This is a borrower self-assessment, not a loan approval,
+          credit decision, financial guarantee, or substitute for a lender's underwriting.
+          Estimates depend on the information you provide.
+        </div>
+
+        <button id="againBtn" class="primary-btn centered-btn" type="button">Run another assessment</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="sampleModal" class="modal" hidden>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="sampleModalTitle">
+      <button id="closeSampleBtn" class="modal-close" type="button" aria-label="Close">×</button>
+      <p class="eyebrow">Demo mode</p>
+      <h2 id="sampleModalTitle">Choose a borrower</h2>
+      <p class="modal-copy">Use the challenge personas to verify the adaptive questions, calculations and Negotiation Card.</p>
+      <div class="sample-grid">
+        <article class="sample-card">
+          <div><strong>Priya</strong><span>Salaried • ₹1.10L income • 780 score</span></div>
+          <div class="sample-actions"><button class="secondary-btn" data-sample="priya" data-mode="review" type="button">Review answers</button><button class="primary-btn" data-sample="priya" data-mode="results" type="button">See result</button></div>
+        </article>
+        <article class="sample-card">
+          <div><strong>Ravi</strong><span>Self-employed • documented ₹35k • collateral</span></div>
+          <div class="sample-actions"><button class="secondary-btn" data-sample="ravi" data-mode="review" type="button">Review answers</button><button class="primary-btn" data-sample="ravi" data-mode="results" type="button">See result</button></div>
+        </article>
+        <article class="sample-card">
+          <div><strong>Anita</strong><span>Variable income • existing app loans • EMI bounce</span></div>
+          <div class="sample-actions"><button class="secondary-btn" data-sample="anita" data-mode="review" type="button">Review answers</button><button class="primary-btn" data-sample="anita" data-mode="results" type="button">See result</button></div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load JavaScript after the modal markup exists in the DOM. -->
+  <script src="rules.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
